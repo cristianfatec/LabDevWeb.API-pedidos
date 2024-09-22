@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: API de Pedidos
+  description: API para consulta de pedidos de clientes.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /pedidos:
+    get:
+      summary: Consulta de pedidos
+      parameters:
+        - name: codigoPedido
+          in: query
+          description: Código do pedido
+          required: false
+          schema:
+            type: string
+        - name: codigoCliente
+          in: query
+          description: Código do cliente
+          required: false
+          schema:
+            type: string
+        - name: cpfCliente
+          in: query
+          description: CPF do cliente
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Status do pedido
+          required: false
+          schema:
+            type: string
+          enum: [pago, enviado, aguardando pagamento, cancelado]
+        - name: dataPedidoMaior
+          in: query
+          description: Filtrar pedidos com data maior que
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: dataPedidoMenor
+          in: query
+          description: Filtrar pedidos com data menor que
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    codigo:
+                      type: string
+                    data:
+                      type: string
+                      format: date
+                    cliente:
+                      type: object
+                      properties:
+                        codigo:
+                          type: string
+                        nome:
+                          type: string
+                        cpf:
+                          type: string
+                    status:
+                      type: string
+                      enum: [pago, enviado, aguardando pagamento, cancelado]
+                    filial:
+                      type: object
+                      properties:
+                        codigo:
+                          type: string
+                        cep:
+                          type: string
+                    valorTotal:
+                      type: number
+                      format: float
+                    itens:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          sequencia:
+                            type: integer
+                          codigoProduto:
+                            type: string
+                          descricao:
+                            type: string
+                          quantidade:
+                            type: integer
+                          valorUnitario:
+                            type: number
+                            format: float
+                          totalItem:
+                            type: number
+                            format: float
